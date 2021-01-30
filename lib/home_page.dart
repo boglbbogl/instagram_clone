@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/feed_screen.dart';
+import 'file:///C:/flutterproject/instagram_clone/lib/screens/feed_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
