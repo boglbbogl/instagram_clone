@@ -1,44 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/screens/profile_screen.dart';
-import 'package:instagram_clone/widgets/sigh_up_form.dart';
-import 'package:instagram_clone/widgets/sign_in_form.dart';
+import 'package:instagram_clone/widgets/fade_stack.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
-
-  Widget signUpForm = SignUpForm();
-  Widget signInForm = SignInForm();
-
-  Widget currentWidgets;
-
-  @override
-  void initState() {
-    if(currentWidgets == null)
-      currentWidgets = signUpForm;
-    super.initState();
-  }
+class _AuthScreenState extends State<AuthScreen>{
+  int selectedForm = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Stack(
-          children: [
-            AnimatedSwitcher(
-                child: currentWidgets,
-              duration: duration,
+          children: <Widget>[
+            FadeStack(
+              selectedForm: selectedForm,
             ),
             Container(
-              child: FlatButton(onPressed: () {
+              child: FlatButton(
+                  onPressed: () {
                 setState(() {
-                  if(currentWidgets is SignUpForm){
-                    currentWidgets = signInForm;
+                  if(selectedForm == 0){
+                    selectedForm = 1;
                   } else{
-                    currentWidgets = signUpForm;
+                    selectedForm = 0;
                   }
                 });
               },
