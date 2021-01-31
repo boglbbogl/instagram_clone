@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/constants/common_size.dart';
 import 'package:instagram_clone/constants/screen_size.dart';
+import 'package:instagram_clone/widgets/rounded_avatar.dart';
 
 class ProfileBody extends StatefulWidget {
   @override
@@ -10,6 +11,8 @@ class ProfileBody extends StatefulWidget {
 
 class _ProfileBodyState extends State<ProfileBody> {
   SelectedTab _selectedTab = SelectedTab.left;
+  double _leftImagesPageMargin = 0;
+  double _rightImagesPageMargin = size.width;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +21,17 @@ class _ProfileBodyState extends State<ProfileBody> {
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildListDelegate([
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(common_gap),
+                    child: RoundedAvatar(
+                      size: 80,
+                    ),
+                  ),
+                  Table(),
+                ],
+              ),
               _username(),
               _userBio(),
               _editProfileBtn(),
@@ -33,19 +47,38 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   SliverToBoxAdapter _imagePager() {
     return SliverToBoxAdapter(
-          child: GridView.count(
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            transform: Matrix4.translationValues(_leftImagesPageMargin, 0, 0),
+            curve: Curves.fastOutSlowIn,
+            child: _images(),
+          ),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            transform: Matrix4.translationValues(_rightImagesPageMargin, 0, 0),
+            curve: Curves.fastOutSlowIn,
+            child: _images(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  GridView _images() {
+    return GridView.count(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 3,
             childAspectRatio: 1,
-            // children: List.generate(
-            //     30,
-            //     (index) => CachedNetworkImage(
-            //       fit: BoxFit.cover,
-            //         imageUrl: 'https://picsum.photos/id/$index/200/200',
-            //     )),
-          ),
-        );
+            children: List.generate(
+                30,
+                (index) => CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: 'https://picsum.photos/id/$index/200/200',
+                    )),
+          );
   }
 
   Widget _selectedIndicator() {
@@ -76,7 +109,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             ),
             onPressed: () {
               setState(() {
-                _selectedTab = SelectedTab.left;
+                _tabSelected(SelectedTab.left);
               });
             },
           ),
@@ -91,13 +124,30 @@ class _ProfileBodyState extends State<ProfileBody> {
             ),
             onPressed: () {
               setState(() {
-                _selectedTab = SelectedTab.right;
+                _tabSelected(SelectedTab.right);
               });
             },
           ),
         ),
       ],
     );
+  }
+
+  _tabSelected(SelectedTab selectedTab){
+    setState(() {
+      switch(selectedTab){
+        case SelectedTab.left:
+          _selectedTab = SelectedTab.left;
+          _leftImagesPageMargin = 0;
+          _rightImagesPageMargin = size.width;
+          break;
+        case SelectedTab.right:
+          _selectedTab = SelectedTab.right;
+          _leftImagesPageMargin = -size.width;
+          _rightImagesPageMargin = 0;
+          break;
+      }
+    });
   }
 
   Padding _editProfileBtn() {
