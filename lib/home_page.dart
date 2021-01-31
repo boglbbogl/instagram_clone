@@ -3,6 +3,8 @@ import 'constants/screen_size.dart';
 import 'file:///C:/flutterproject/instagram_clone/lib/screens/feed_screen.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 
+import 'screens/camera_screen.dart';
+
 class HomePage extends StatefulWidget {
   HomePage({
     Key key,
@@ -39,7 +41,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (size == null) size = MediaQuery.of(context).size;
+    if (size == null) size = MediaQuery
+        .of(context)
+        .size;
 
     return Scaffold(
       body: IndexedStack(
@@ -58,10 +62,22 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _onBtmItemClick(int Index) {
-    setState(() {
-      _selectedIndex = Index;
+  void _onBtmItemClick(int index) {
+    switch (index) {
+      case 2:
+        _openCamera();
+        break;
+      default:
+        {
+          setState(() {
+            _selectedIndex = index;
+          });
+        }
     }
-    );
+  }
+
+  void _openCamera() {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => CameraScreen()));
   }
 }
