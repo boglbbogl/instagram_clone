@@ -8,6 +8,7 @@ import 'file:///C:/flutterproject/instagram_clone/lib/screens/feed_screen.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 
 import 'screens/camera_screen.dart';
+import 'screens/search_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -32,9 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   static List<Widget> _screens = <Widget>[
     FeedScreen(),
-    Container(
-      color: Colors.blueAccent,
-    ),
+    SearchScreen(),
     Container(
       color: Colors.greenAccent,
     ),
