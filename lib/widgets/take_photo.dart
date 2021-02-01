@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/constants/common_size.dart';
 import 'package:instagram_clone/constants/screen_size.dart';
 import 'package:instagram_clone/models/camare_state.dart';
+import 'package:instagram_clone/screens/share_post_screen.dart';
 import 'package:instagram_clone/widgets/my_progress_indicator.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,7 +39,7 @@ class _TakePhotoState extends State<TakePhoto> {
             child: OutlineButton(
               onPressed: () {
                 if(cameraState.isReadyToTakePhoto){
-                  _attemptTakePhoto(cameraState);
+                  _attemptTakePhoto(cameraState, context);
                 }
               },
               shape: CircleBorder(),
@@ -62,7 +65,7 @@ class _TakePhotoState extends State<TakePhoto> {
       ),
     );
   }
-  void _attemptTakePhoto(CameraState cameraState) async{
+  void _attemptTakePhoto(CameraState cameraState, BuildContext context) async{
 
     final String timeInMilli = DateTime.now().millisecondsSinceEpoch.toString();
     try{
@@ -70,6 +73,8 @@ class _TakePhotoState extends State<TakePhoto> {
 
       await cameraState.controller.takePicture(path);
 
+      File imageFile = File(path);
+      Navigator.of(context).push(MaterialPageRoute(builder: (_)=> SharePostScreen(imageFile)));
     }catch(e){
 
     }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -44,9 +46,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (size == null) size = MediaQuery
-        .of(context)
-        .size;
+    if (size == null) size = MediaQuery.of(context).size;
 
     return Scaffold(
       key: _key,
@@ -82,11 +82,11 @@ class _HomePageState extends State<HomePage> {
 
   void _openCamera() async {
     if (await checkIfPermissonGranted(context))
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => CameraScreen()));
-    else{
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => CameraScreen()));
+    else {
       SnackBar snackBar = SnackBar(
-          content: Text('사진, 파일, 마이크 접근 허용 해주셔야 카메라 사용 가능합니다'),
+        content: Text('사진, 파일, 마이크 접근 허용 해주셔야 카메라 사용 가능합니다'),
         action: SnackBarAction(
           label: 'OK',
           onPressed: () {
@@ -99,12 +99,18 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<bool> checkIfPermissonGranted(BuildContext context) async{
-    Map<Permission, PermissionStatus> statuses = await [Permission.camera, Permission.microphone].request();
+  Future<bool> checkIfPermissonGranted(BuildContext context) async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      Permission.microphone,
+      Platform.isIOS?
+      Permission.photos:
+      Permission.storage
+    ].request();
     bool permitted = true;
 
     statuses.forEach((permission, permissionStatus) {
-      if(!permissionStatus.isGranted) permitted = false;
+      if (!permissionStatus.isGranted) permitted = false;
     });
     return permitted;
   }
