@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/screens/auth_screen.dart';
 import 'constants/material_white.dart';
 import 'home_page.dart';
 
