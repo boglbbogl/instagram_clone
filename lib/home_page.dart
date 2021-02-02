@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'constants/screen_size.dart';
 import 'file:///C:/flutterproject/instagram_clone/lib/screens/feed_screen.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
-
 import 'screens/camera_screen.dart';
 import 'screens/search_screen.dart';
 

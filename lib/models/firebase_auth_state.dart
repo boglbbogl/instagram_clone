@@ -3,13 +3,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseAuthState extends ChangeNotifier {
-  FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.signout;
+  FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.progress;
   FirebaseUser _firebaseUser;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   void watchAuthChange() {
     _firebaseAuth.onAuthStateChanged.listen((firebaseUser) {
+      changeFirebaseAuthStatus();
       if (firebaseUser == null && _firebaseUser == null) {
+        changeFirebaseAuthStatus();
         return;
       } else if (firebaseUser != _firebaseUser) {
         _firebaseUser = firebaseUser;
@@ -20,6 +22,7 @@ class FirebaseAuthState extends ChangeNotifier {
 
   void registerUser(BuildContext context,
       {@required email, @required password}) {
+    changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
     _firebaseAuth
         .createUserWithEmailAndPassword(
             email: email.trim(), password: password.trim())
@@ -44,7 +47,8 @@ class FirebaseAuthState extends ChangeNotifier {
     });
   }
 
-  void signOut() {
+  void signOut() async{
+    changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
     _firebaseAuthStatus = FirebaseAuthStatus.signout;
     if (_firebaseUser != null) {
       _firebaseUser = null;
@@ -54,6 +58,7 @@ class FirebaseAuthState extends ChangeNotifier {
   }
 
   void login(BuildContext context, {@required email, @required password}) {
+    changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
     _firebaseAuth
         .signInWithEmailAndPassword(email: email.trim(), password: password.trim())
         .catchError((error) {
