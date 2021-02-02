@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/constants/common_size.dart';
 import 'package:instagram_clone/constants/screen_size.dart';
 import 'package:instagram_clone/models/camare_state.dart';
 import 'package:instagram_clone/screens/share_post_screen.dart';

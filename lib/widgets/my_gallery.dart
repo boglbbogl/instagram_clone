@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/gallery_state.dart';
 import 'package:instagram_clone/screens/share_post_screen.dart';

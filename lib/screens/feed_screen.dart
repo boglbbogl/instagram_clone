@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../widgets/post.dart';
 
 class FeedScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         leading: IconButton(
-          onPressed: null,
+          onPressed: () {
+          },
           icon: Icon(
-            CupertinoIcons.switch_camera_solid,
+            Icons.send,
             color: Colors.black87,
           ),
         ),
@@ -26,7 +27,8 @@ class FeedScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             IconButton(
-              onPressed: null,
+              onPressed: () {
+              },
               icon: ImageIcon(
                 AssetImage('assets/images/actionbar_camera2.png'),
                 color: Colors.black87,

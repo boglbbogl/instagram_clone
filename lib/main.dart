@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/firebase_auth_state.dart';
 import 'package:instagram_clone/screens/auth_screen.dart';
@@ -43,5 +44,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
+  }
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Widget>('_currentWidget', _currentWidget));
   }
 }

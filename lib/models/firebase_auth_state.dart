@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../repo/user_network_repository.dart';
+
 
 class FirebaseAuthState extends ChangeNotifier {
   FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.progress;
@@ -21,9 +23,9 @@ class FirebaseAuthState extends ChangeNotifier {
   }
 
   void registerUser(BuildContext context,
-      {@required email, @required password}) {
+      {@required email, @required password}) async{
     changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
-    _firebaseAuth
+    AuthResult authResult = await _firebaseAuth
         .createUserWithEmailAndPassword(
             email: email.trim(), password: password.trim())
         .catchError((error) {
@@ -45,6 +47,16 @@ class FirebaseAuthState extends ChangeNotifier {
       );
       Scaffold.of(context).showSnackBar(snackBar);
     });
+
+    _firebaseUser = authResult.user;
+    if(_firebaseUser==null){
+      SnackBar snackBar = SnackBar(
+        content: Text("please try again later"),
+      );
+      Scaffold.of(context).showSnackBar(snackBar);
+    }else{
+    }
+    await userNetworkRepository.attemptCreateUser(userKey: _firebaseUser.uid, email: _firebaseUser.email);
   }
 
   void signOut() async{
