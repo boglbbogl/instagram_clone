@@ -112,7 +112,7 @@ class _SignInFormState extends State<SignInForm> {
         if (_formKey.currentState.validate()) {
           print('Validation success!!');
           Provider.of<FirebaseAuthState>(context, listen: false)
-              .changeFirebaseAuthStatus(FirebaseAuthStatus.signin);
+              .login(context, email: _emailController.text, password: _pwController.text);
         }
       },
       shape: RoundedRectangleBorder(

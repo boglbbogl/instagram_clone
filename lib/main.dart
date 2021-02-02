@@ -10,9 +10,10 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   FirebaseAuthState _firebaseAuthState = FirebaseAuthState();
-
+  Widget _currentWidget;
   @override
   Widget build(BuildContext context) {
+    _firebaseAuthState.watchAuthChange();
     return ChangeNotifierProvider<FirebaseAuthState>.value(
       value: _firebaseAuthState,
       child: MaterialApp(
@@ -20,15 +21,22 @@ class MyApp extends StatelessWidget {
         home: Consumer<FirebaseAuthState>(
             builder: (BuildContext context, FirebaseAuthState firebaseAuthState,
                 Widget child) {
+
               switch (firebaseAuthState.firebaseAuthStatus) {
                 case FirebaseAuthStatus.signout:
-                  return AuthScreen();
+                  _currentWidget = AuthScreen();
+                  break;
                 case FirebaseAuthStatus.signin:
-                  return HomePage();
-                default:
-                  return MyProgressIndicator();
+                  _currentWidget = HomePage();
+                  break;
+                  default:
+                    _currentWidget = MyProgressIndicator();
               }
-            },
+              return AnimatedSwitcher(
+                child: _currentWidget,
+                  duration: Duration(milliseconds: 300),
+              );
+            }
         ),
         theme: ThemeData(
           primarySwatch: white,
